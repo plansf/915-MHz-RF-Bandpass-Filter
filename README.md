@@ -2,11 +2,9 @@
 
 I’m developing this as a student RF hardware project: design a compact filter for
 the 902–928 MHz band, model it, lay out a PCB, then compare the model with a
-NanoVNA measurement. Revision A is the digital prototype. The boards have not
-been fabricated or measured yet.
+NanoVNA measurement. Revision A is the digital prototype, the boards have been simulated, but yet to be fabricated and tested to see comparison of real Vs. theoretical measurements.
 
-I used AI assistance during development. I’m keeping the assumptions and current
-limits visible so the simulation is not mistaken for measured hardware results.
+I’m keeping the assumptions and current limits visible so the simulation is not mistaken for measured hardware results.
 
 ## The design
 
