@@ -1,0 +1,16 @@
+{
+  "instrument": "",
+  "firmware": "",
+  "date": "",
+  "operator": "",
+  "board_revision": "A",
+  "board_serial": "",
+  "calibration": "",
+  "reference_plane": "",
+  "measured_channels": ["S11", "S21"],
+  "sweep_points": null,
+  "averages": null,
+  "cables_and_adapters": "",
+  "component_changes": "None",
+  "notes": "Fill in before analysis. Record exact NanoVNA model and calibration kit."
+}

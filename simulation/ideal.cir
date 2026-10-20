@@ -1,0 +1,14 @@
+* RF915 selected BOM, IDEAL lumped baseline ONLY; not the estimated PCB model
+* AC source 2 V and 50-ohm source/load: V(out)=S21; V(in)-1=S11
+Vsrc src 0 AC 2
+Rsrc src in 50
+C1 in n1 1.8p
+L1 n1 mid 15n
+L2 mid 0 1.8n
+C2 mid 0 10p
+L3 mid n2 15n
+C3 n2 out 1.8p
+Rload out 0 50
+.ac dec 300 200Meg 2200Meg
+.save V(in) V(out)
+.end

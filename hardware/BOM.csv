@@ -1,0 +1,7 @@
+References,Quantity per filter,Quantity per thru,Value,Package,Manufacturer,Manufacturer part number,Notes
+"C1 C3",2,0,1.8 pF +/-0.1 pF,0402,Johanson,500R07S1R8BV4T,High-Q C0G 50 V; buy extras for loss and rework
+C2,1,0,10 pF +/-5%,0402,Johanson,QSCF500Q100J1GV001T,Manufacturer cross-reference 500R07S100JV4T; high-Q C0G 50 V
+"L1 L3",2,0,15 nH +/-5%,0603,Coilcraft,0603HP-15NXJRW,Use this RF family to match frequency-dependent model
+L2,1,0,1.8 nH +/-5%,0603,Coilcraft,0603HP-1N8XJRW,Very short ground return is important
+"J1 J2",2,2,50 ohm SMA female,Vertical through hole,Amphenol RF,132134,Not an edge-launch or RP-SMA connector
+PCB,1,1,40 x 24 x 0.8 mm,2-layer FR4,PCB fabricator,Custom Rev A,35 um copper; filter and thru are DIFFERENT board files

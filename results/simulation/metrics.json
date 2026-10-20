@@ -1,0 +1,47 @@
+{
+  "status": "SIMULATED_NOT_MEASURED",
+  "ideal": {
+    "worst_passband_insertion_loss_db": 2.3339258748819645,
+    "worst_passband_return_loss_db": 3.8117995642100184,
+    "passband_ripple_db": 0.2255476605219937,
+    "insertion_loss_915_db": 2.203316285588644,
+    "return_loss_915_db": 4.00225673830234,
+    "passband_pass": false,
+    "stopband": {
+      "433": {
+        "attenuation_db": 33.70052260921931,
+        "pass": true
+      },
+      "1830": {
+        "attenuation_db": 19.566048513123143,
+        "pass": true
+      }
+    },
+    "overall_pass": false
+  },
+  "estimated_board": {
+    "worst_passband_insertion_loss_db": 1.0069557389230952,
+    "worst_passband_return_loss_db": 25.13858177691857,
+    "passband_ripple_db": 0.023254824356295556,
+    "insertion_loss_915_db": 0.9911393488083404,
+    "return_loss_915_db": 26.853466234562383,
+    "passband_pass": true,
+    "stopband": {
+      "433": {
+        "attenuation_db": 30.439165394925244,
+        "pass": true
+      },
+      "1830": {
+        "attenuation_db": 47.65056305156008,
+        "pass": true
+      }
+    },
+    "overall_pass": true
+  },
+  "sensitivity": {
+    "seed": 915,
+    "samples": 300,
+    "passing_samples": 275,
+    "meaning": "Illustrative independent uniform tolerances and branch parasitics, not measured yield"
+  }
+}

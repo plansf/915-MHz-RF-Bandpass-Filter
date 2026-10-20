@@ -1,0 +1,27 @@
+{
+  "kind": "simulation",
+  "input": "C:\\Users\\plans\\PRJ\\rf915-filter\\results\\simulation\\nominal.s2p",
+  "metadata": {
+    "note": "User supplied data; not claimed to be a physical measurement"
+  },
+  "metrics": {
+    "worst_passband_insertion_loss_db": 1.0069557389209358,
+    "worst_passband_return_loss_db": 25.138581776922365,
+    "passband_ripple_db": 0.023254824347707093,
+    "insertion_loss_915_db": 0.991139348812356,
+    "return_loss_915_db": 26.853466234570927,
+    "passband_pass": true,
+    "stopband": {
+      "433": {
+        "attenuation_db": 30.439165394931116,
+        "pass": true
+      },
+      "1830": {
+        "attenuation_db": 47.650563051568696,
+        "pass": true
+      }
+    },
+    "overall_pass": true
+  },
+  "warnings": []
+}

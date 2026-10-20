@@ -1,0 +1,54 @@
+{
+  "revision": "A",
+  "status": "UNBUILT_ENGINEERING_PROTOTYPE",
+  "components": {
+    "C1": 1.8,
+    "L1": 15.0,
+    "L2": 1.8,
+    "C2": 10.0,
+    "L3": 15.0,
+    "C3": 1.8
+  },
+  "units": {
+    "L": "nH",
+    "C": "pF"
+  },
+  "targets": {
+    "passband_mhz": [
+      902,
+      928
+    ],
+    "max_insertion_loss_db": 3,
+    "min_return_loss_db": 10,
+    "stopband_min_attenuation_db": {
+      "433": 15,
+      "1830": 15
+    }
+  },
+  "pcb": {
+    "width_mm": 40,
+    "height_mm": 24,
+    "thickness_mm": 0.8,
+    "layers": 2,
+    "copper_um": 35,
+    "er_assumed": 4.3,
+    "feed_width_mm": 1.5,
+    "nominal_line_ohms": 50
+  },
+  "parasitics": {
+    "capacitor_esr_ohm": 0.08,
+    "capacitor_esl_nh": 0.2,
+    "center_pad_pf": 0.15,
+    "launch_pad_pf": 0.12,
+    "launch_series_nh": 0.4,
+    "port_line_length_mm": 8.42,
+    "ground_return_nh": 0.15,
+    "narrow_trace_ohms": 93,
+    "narrow_trace_er_eff": 2.9,
+    "inductor_branch_mm": 0.5125,
+    "capacitor_branch_mm": 1.02,
+    "between_series_parts_mm": 1.2325,
+    "inductor_to_center_mm": 1.7125,
+    "feed_neck_mm": 1.1
+  }
+}
