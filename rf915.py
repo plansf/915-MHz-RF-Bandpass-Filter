@@ -71,7 +71,7 @@ def simulate(f, cfg, ideal=False, variation=None):
     """Series C1/L1, parallel L2/C2, series L3/C3, SMA-to-SMA estimates.
 
     The branch parasitics include branch trace + via return. They are assumptions,
-    not extracted values. See design.json and docs/design.md.
+    not extracted values. See design.json and the README.
     """
     f = np.asarray(f, float)
     if f.ndim != 1 or np.any(f <= 0):

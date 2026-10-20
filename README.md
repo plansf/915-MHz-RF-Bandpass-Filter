@@ -1,92 +1,99 @@
-# RF915: 915 MHz filter and NanoVNA characterization
+# RF915: 915 MHz LC Filter
 
-**Revision A: complete digital prototype package; not physically built or measured.**
+I’m developing this as a student RF hardware project: design a compact filter for
+the 902–928 MHz band, model it, lay out a PCB, then compare the model with a
+NanoVNA measurement. Revision A is the digital prototype. The boards have not
+been fabricated or measured yet.
 
-Project by Francisco Plans, developed with AI assistance as an engineering
-learning project. The CAD, circuit model and analysis workflow have digital
-verification records; fabrication and NanoVNA measurements are still pending.
-See [the portfolio notes](docs/PORTFOLIO.md) for the current evidence and
-learning plan.
+I used AI assistance during development. I’m keeping the assumptions and current
+limits visible so the simulation is not mistaken for measured hardware results.
 
-A hands-on RF project for Francisco Plans: assemble a passive LC bandpass filter,
-measure S11/S21 with a NanoVNA, and compare the result with a reproducible circuit
-model. A separate straight-through reference board helps identify connector and
-fixture problems. This project builds RF hardware and measurement experience;
-it does not demonstrate DRAM design experience.
+## The design
 
-Start with [the illustrated engineering report](REPORT.html), then follow
-[fabrication and assembly](docs/BUILD.md) and [the NanoVNA procedure](docs/MEASURE.md).
+The filter is a passive, three-resonator LC bandpass network with 50-ohm SMA
+ports. It uses 1.8 pF series capacitors, 15 nH series inductors, and a 1.8 nH /
+10 pF shunt resonator. The KiCad package includes the filter PCB and a separate
+through-reference board. Both are routed as two-layer, 40 x 24 mm boards for a
+specified 0.8 mm FR4 stackup.
 
-## Files
+The Python model calculates S-parameters and can analyze Touchstone 1.x `.s2p`
+files. It includes a typical vendor model for the inductors and estimates for
+capacitor, trace, connector, and ground-return parasitics. Those PCB and launch
+values are assumptions; the design has not had full-wave EM analysis.
 
-| Deliverable | Location |
-|---|---|
-| Editable schematic and routed PCB | `hardware/rf915.kicad_pro` |
-| Through reference board | `hardware/rf915-thru.kicad_pro` |
-| Schematic PDF | `results/cad/schematic.pdf` |
-| Parts to order | `hardware/BOM.csv` |
-| PCB manufacturing ZIPs | `fabrication/*-revA-gerbers.zip` |
-| Circuit assumptions and equations | `docs/DESIGN.md`, `design.json` |
-| Python simulation and Touchstone analysis | `rf915.py` |
-| Simulated response and sensitivity | `results/simulation/` |
-| Measurement metadata and raw-data folder | `measurements/` |
-| Portfolio write-up to complete after testing | `docs/PORTFOLIO.md` |
-| Verification records | `hardware/*rpt`, `results/verification.txt` |
+## Current results
 
-## Run the software
+The simulated board model meets the initial targets in `design.json`:
 
-In PowerShell, from this folder (Python 3.11+):
+| Measure | Target | Estimated board model |
+|---|---:|---:|
+| Insertion loss across 902–928 MHz | ≤ 3 dB | 1.01 dB worst case |
+| Return loss across 902–928 MHz | ≥ 10 dB | 25.14 dB worst case |
+| Attenuation at 433 MHz | ≥ 15 dB | 30.44 dB |
+| Attenuation at 1830 MHz | ≥ 15 dB | 47.65 dB |
+
+These are simulation outputs, not acceptance results. The ideal lumped model
+misses the return-loss target, which shows how much the prediction depends on
+the estimated PCB parasitics. In an illustrative 300-case sensitivity sweep,
+275 cases met the modeled targets; this is not a manufacturing-yield estimate.
+See `results/simulation/metrics.json` and `results/simulation/response.png`.
+
+## What has been checked
+
+The original validation run recorded 10 Python tests passing, clean KiCad ERC
+and DRC checks for both boards, and valid fabrication exports. These checks cover
+the digital design package. The included KiCad reports are the raw ERC/DRC
+outputs. No board has been ordered, assembled, or tested with a VNA. The design
+also has not had production qualification or full-wave EM analysis.
+
+## Run the model
+
+Python 3.11+ with NumPy and Matplotlib is needed for the analysis scripts. From
+this folder in PowerShell:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe rf915.py simulate
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-No instrument is needed for simulation. For your own measurement, first copy
-`measurements/metadata-template.json` to a new JSON file and complete its fields:
+To analyze a real acquisition, keep the original Touchstone file and complete
+`measurements/metadata-template.json` with the instrument and calibration
+details. Then run:
 
 ```powershell
 .\.venv\Scripts\python.exe rf915.py analyze measurements\filter-revA.s2p --kind measured --metadata measurements\filter-revA.json --output results\measured-revA --reference results\simulation\nominal.s2p
 ```
 
-Outputs are a comparison plot, metrics JSON, and CSV including group delay.
-Only mark real acquisitions `measured`. An included simulation file cannot be
-relabeled as a measurement. A missing stopband frequency produces an unknown
-result, not a pass. Touchstone 1.x, 50-ohm, two-port RI/MA/DB files are supported.
+The analyzer requires complete coverage of the passband and will not label the
+included simulated files as measured data. It reports S-parameter metrics, a
+comparison plot, CSV data, and group delay.
 
-## Rebuild the CAD and package
+## Next step: build and measure
 
-KiCad 9 is required; the generator uses its bundled Python, pcbnew and wx.
-`build.ps1` uses the `python` on PATH for scientific analysis. Activate your venv
-first, or install requirements in that Python. To regenerate the report, also
-install `requirements-report.txt`.
+The Gerber archives are in `fabrication/`; the parts list is `hardware/BOM.csv`.
+Before ordering, confirm the fabricator can provide the specified two-layer,
+0.8 mm FR4 stackup. Assemble the filter and through-reference boards, check them
+with a multimeter, calibrate the NanoVNA at the cable ends, and save the raw
+Touchstone exports and measurement metadata. Compare those measurements with
+the model before deciding whether to tune or make Revision B. Do not substitute
+1.6 mm board thickness without revising the design.
 
-```powershell
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements-report.txt
-.\build.ps1
-```
+## Repository map
 
-The script regenerates native CAD, refills copper zones, checks ERC/DRC and
-schematic parity, exports Gerbers/drills, runs tests, simulates and creates the
-report. It stops on native-command failures. **It overwrites generated CAD.**
-For a hand-edited layout, preserve a copy and update the generator before rebuilding.
-UUIDs and export timestamps may change on regeneration.
+- `hardware/` — editable KiCad design, BOM, and ERC/DRC records
+- `fabrication/` — Gerber, drill, and board ZIP files
+- `rf915.py`, `design.json` — model, Touchstone analysis, and design inputs
+- `results/simulation/` — simulated Touchstone files, metrics, and plots
+- `measurements/` — metadata template and place for future raw measurements
+- `tests/` — model and Touchstone parser tests
 
-## What counts as success
+## References
 
-Design targets: insertion loss <=3 dB and input return loss >=10 dB across
-902-928 MHz; attenuation >=15 dB at 433 MHz and 1830 MHz. This is a **broad
-educational bandpass filter**, not a sharp 26 MHz channel-selection filter.
-The shipped nominal circuit model passes; that is not evidence that an assembled
-board will pass. The model is particularly sensitive to shunt layout parasitics.
-Read the limitations in `docs/DESIGN.md` before ordering.
+- [Coilcraft 0603HP SPICE model](https://www.coilcraft.com/getmedia/353e55d2-1d20-470a-9567-550d989b0e5d/spice_0603hp.pdf) — inductor model basis.
+- [Amphenol 132134 mechanical drawing](https://www.amphenolrf.com/library/download/link/link_id/593003/parent/132134/) — vertical SMA footprint dimensions.
+- [KiCad 9 CLI documentation](https://docs.kicad.org/9.0/en/cli/cli.html) — ERC, DRC, and fabrication export tools.
+- [NanoVNA calibration](https://nanovna.com/?page_id=2) and [NanoVNA-Saver](https://github.com/NanoVNA-Saver/nanovna-saver) — instrument setup and Touchstone export references.
 
-Your next steps are to order the two boards and parts, assemble, calibrate your
-NanoVNA, capture data and tune. The exact NanoVNA model is unknown; only test at
-915 MHz and 1830 MHz if your unit has a documented usable range there. File export
-is used instead of firmware-specific serial commands.
-
-Vendor references and footprint attribution: [sources](docs/SOURCES.md).
+The vendor datasheet and KiCad-derived footprints retain their original sources;
+they are included as references and are not claimed as original work.

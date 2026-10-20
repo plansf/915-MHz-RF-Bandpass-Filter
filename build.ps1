@@ -30,5 +30,4 @@ foreach ($name in @('rf915','rf915-thru')) {
 Run 'python' @('-m','unittest','discover','-s','tests','-v')
 if (-not $SkipSimulation) { Run 'python' @('rf915.py','simulate') }
 Run 'python' @('rf915.py','analyze','results/simulation/nominal.s2p','--kind','simulation','--output','results/analysis-example','--reference','results/simulation/ideal.s2p')
-Run 'python' @('tools/make_report.py')
-Write-Output 'Digital prototype package rebuilt; physical assembly and measurement remain.'
+Write-Output 'Digital prototype rebuilt; physical assembly and measurement remain.'
